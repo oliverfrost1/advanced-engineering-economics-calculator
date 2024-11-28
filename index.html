@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Advanced Engineering Economics Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👷🏻‍♂️</text></svg>"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      input {
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+      }
+      button {
+        padding: 10px;
+        font-size: 16px;
+      }
+      #result,
+      #unformattedResult {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .explainer {
+        margin-bottom: 20px;
+      }
+      .formula-list {
+        margin-top: 20px;
+      }
+      .sample-inputs {
+        margin-top: 20px;
+      }
+      pre {
+        background-color: #f4f4f4;
+        padding: 10px;
+      }
+
+      @media screen and (max-width: 768px) {
+        input {
+          width: 90%;
+          height: 20px;
+          padding: 15px;
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+        button {
+          width: 100%;
+          padding: 15px;
+          font-size: 18px;
+        }
+      }
+
+      .copy-btn {
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+        min-width: 80px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .copy-btn {
+          padding: 8px;
+          font-size: 12px;
+          min-width: auto;
+          flex: 1;
+        }
+
+        #result,
+        #unformattedResult {
+          font-size: 16px;
+          word-break: break-word;
+        }
+
+        div[style*="display: flex"] {
+          flex-wrap: wrap;
+          gap: 5px !important;
+        }
+
+        div[style*="display: flex"] > div[style*="flex-grow: 1"] {
+          flex: 0 0 100%;
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Engineering Economics Calculator</h1>
+
+    <!-- Explanatory Text -->
+    <div class="explainer">
+      <p>
+        Welcome to the Engineering Economics Calculator! This tool allows you to
+        evaluate complex economic expressions by utilizing various financial
+        factors. Simply enter your expression in the input field below and click
+        "Calculate" to obtain the result.
+      </p>
+      <p>
+        The calculator supports a range of financial factors that are essential
+        in engineering economic analysis. Below, you'll find a list of all
+        available formulas along with their descriptions.
+      </p>
+    </div>
+
+    <!-- Allowed Formulas -->
+    <div class="formula-list">
+      <h2>Supported Financial Factors and Formulas</h2>
+      <ul>
+        <li>
+          <strong>P/F</strong> (Present Value Factor):
+          <code>P/F = 1 / (1 + i)^n</code>
+        </li>
+        <li>
+          <strong>F/P</strong> (Future Value Factor):
+          <code>F/P = (1 + i)^n</code>
+        </li>
+        <li>
+          <strong>P/A</strong> (Present Worth of Annuity Factor):
+          <code>P/A = [(1 + i)^n - 1] / [i * (1 + i)^n]</code>
+        </li>
+        <li>
+          <strong>A/P</strong> (Capital Recovery Factor):
+          <code>A/P = [i * (1 + i)^n] / [(1 + i)^n - 1]</code>
+        </li>
+        <li>
+          <strong>F/A</strong> (Future Worth of Annuity Factor):
+          <code>F/A = [(1 + i)^n - 1] / i</code>
+        </li>
+        <li>
+          <strong>A/F</strong> (Equivalent Annual Cost Factor):
+          <code>A/F = i / [(1 + i)^n - 1]</code>
+        </li>
+        <li>
+          <strong>P/G</strong> (Present Value of Gradient Factor):
+          <code>P/G = [(1 + i)^n - i * n - 1] / [i² * (1 + i)^n]</code>
+        </li>
+        <li>
+          <strong>A/G</strong> (Gradient Series Factor):
+          <code>A/G = [(1 + i)^n - i * n - 1] / [i * ((1 + i)^n - 1)]</code>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Calculator Input -->
+    <input
+      type="text"
+      id="expression"
+      placeholder="Enter your expression here, e.g., 1000*(P/F,5%,10)"
+      onkeypress="if(event.key === 'Enter') calculate()"
+    />
+    <button onclick="calculate()">Calculate</button>
+    <div
+      style="display: flex; align-items: center; gap: 10px; margin-top: 20px"
+    >
+      <div id="result" style="flex-grow: 1"></div>
+      <button onclick="copyResult('formatted')" class="copy-btn">Copy</button>
+      <button onclick="copyResult('formatted-with-equation')" class="copy-btn">
+        Copy with Equation
+      </button>
+    </div>
+    <div
+      style="display: flex; align-items: center; gap: 10px; margin-top: 10px"
+    >
+      <div id="unformattedResult" style="flex-grow: 1"></div>
+      <button onclick="copyResult('unformatted')" class="copy-btn">Copy</button>
+      <button
+        onclick="copyResult('unformatted-with-equation')"
+        class="copy-btn"
+      >
+        Copy with Equation
+      </button>
+    </div>
+
+    <!-- Sample Inputs -->
+    <div class="sample-inputs">
+      <h2>Sample Inputs</h2>
+      <p>Here are some example expressions you can try:</p>
+      <ul>
+        <li>
+          <code>5000*(P/F,5%,5)</code> - Calculates the present value of $5,000
+          received after 5 years at an annual interest rate of 5%.
+        </li>
+        <li>
+          <code>2000 + 3000*(F/P,3%,10)</code> - Adds $2,000 to the future value
+          of $3,000 after 10 years at an annual interest rate of 3%.
+        </li>
+        <li>
+          <code>1000*(P/A,4%,7)</code> - Calculates the present worth of an
+          annuity of $1,000 per year for 7 years at an annual interest rate of
+          4%.
+        </li>
+        <li>
+          <code>(500*(A/P,6%,15) + 2000*(F/A,6%,15))</code> - Combines multiple
+          factors to compute a complex expression.
+        </li>
+      </ul>
+    </div>
+
+    <p>
+      Created by
+      <a href="https://github.com/oliverfrost1" target="_blank"
+        >@oliverfrost1</a
+      >
+    </p>
+    <p>
+      Another version available at
+      <a
+        href="https://frosttools.com/engineeringeconomicscalculator"
+        target="_blank"
+        >https://frosttools.com/engineeringeconomicscalculator</a
+      >
+    </p>
+
+    <script>
+      function calculate() {
+        let expr = document.getElementById("expression").value;
+        let result = evaluateExpression(expr);
+        if (!isNaN(result)) {
+          document.getElementById("result").innerText =
+            "Formatted Result: " +
+            result.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+          document.getElementById("unformattedResult").innerText =
+            "Unformatted Result: " + result;
+        } else {
+          document.getElementById("result").innerText =
+            "Invalid expression. Please check your input.";
+          document.getElementById("unformattedResult").innerText = "";
+        }
+      }
+
+      function evaluateExpression(expr) {
+        try {
+          // Remove spaces
+          expr = expr.replace(/\s+/g, "");
+
+          // Replace factor functions with their computed values wrapped in parentheses
+          expr = expr.replace(
+            /\(([A-Za-z\/]+),([^,]+),([^)]+)\)/g,
+            function (match, factor, rate, n) {
+              let i = parseFactor(factor, rate, n);
+              if (isNaN(i)) {
+                throw new Error(`Invalid factor or parameters: ${match}`);
+              }
+              return `(${i})`; // Wrap the computed value in parentheses to ensure correct order of operations
+            }
+          );
+
+          // Insert multiplication operators where needed
+          expr = insertMultiplicationOperators(expr);
+
+          // Evaluate the final expression using eval
+          let evalResult = eval(expr);
+          return evalResult;
+        } catch (e) {
+          console.error("Error evaluating expression:", e);
+          return NaN;
+        }
+      }
+
+      function insertMultiplicationOperators(expr) {
+        // Insert '*' between number and '(' or between ')' and number or between number and variable
+        expr = expr.replace(/(\d+(\.\d+)?)(\()/g, "$1*$3"); // number followed by '('
+        expr = expr.replace(/(\))(\d+(\.\d+)?)/g, "$1*$2"); // ')' followed by number
+        expr = expr.replace(/(\d+(\.\d+)?)([A-Za-z])/g, "$1*$3"); // number followed by variable
+        expr = expr.replace(/([A-Za-z])(\d+(\.\d+)?)/g, "$1*$2"); // variable followed by number
+        expr = expr.replace(/(\))(\()/g, "$1*$2"); // ')' followed by '('
+        return expr;
+      }
+
+      function parseFactor(factor, rate, n) {
+        // Validate and parse rate and n
+        let rateClean = rate.replace(/%/g, "");
+        let i = parseFloat(rateClean) / 100;
+        let periods = parseFloat(n);
+
+        if (isNaN(i) || isNaN(periods)) {
+          console.error(
+            `Invalid rate or periods: Rate='${rate}', Periods='${n}'`
+          );
+          return NaN;
+        }
+
+        switch (factor.toUpperCase()) {
+          case "P/F":
+            return P_over_F(i, periods);
+          case "F/P":
+            return F_over_P(i, periods);
+          case "P/A":
+            return P_over_A(i, periods);
+          case "A/P":
+            return A_over_P(i, periods);
+          case "F/A":
+            return F_over_A(i, periods);
+          case "A/F":
+            return A_over_F(i, periods);
+          case "P/G":
+            return P_over_G(i, periods);
+          case "A/G":
+            return A_over_G(i, periods);
+          default:
+            console.error(`Unsupported factor: ${factor}`);
+            return NaN;
+        }
+      }
+
+      // Factor functions
+      function P_over_F(i, n) {
+        return 1 / Math.pow(1 + i, n);
+      }
+
+      function F_over_P(i, n) {
+        return Math.pow(1 + i, n);
+      }
+
+      function P_over_A(i, n) {
+        return (Math.pow(1 + i, n) - 1) / (i * Math.pow(1 + i, n));
+      }
+
+      function A_over_P(i, n) {
+        return (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+      }
+
+      function F_over_A(i, n) {
+        return (Math.pow(1 + i, n) - 1) / i;
+      }
+
+      function A_over_F(i, n) {
+        return i / (Math.pow(1 + i, n) - 1);
+      }
+
+      function P_over_G(i, n) {
+        return (Math.pow(1 + i, n) - i * n - 1) / (i * i * Math.pow(1 + i, n));
+      }
+
+      function A_over_G(i, n) {
+        let numerator = Math.pow(1 + i, n) - i * n - 1;
+        let denominator = i * (Math.pow(1 + i, n) - 1);
+
+        return numerator / denominator;
+      }
+
+      function copyResult(type) {
+        const expr = document.getElementById("expression").value;
+        const formattedResult = document
+          .getElementById("result")
+          .innerText.replace("Formatted Result: ", "");
+        const unformattedResult = document
+          .getElementById("unformattedResult")
+          .innerText.replace("Unformatted Result: ", "");
+
+        let textToCopy = "";
+
+        switch (type) {
+          case "formatted":
+            textToCopy = formattedResult;
+            break;
+          case "unformatted":
+            textToCopy = unformattedResult;
+            break;
+          case "formatted-with-equation":
+            textToCopy = `${expr} = ${formattedResult}`;
+            break;
+          case "unformatted-with-equation":
+            textToCopy = `${expr} = ${unformattedResult}`;
+            break;
+        }
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const btn = event.target;
+          const originalText = btn.innerText;
+          btn.innerText = "Copied!";
+          setTimeout(() => {
+            btn.innerText = originalText;
+          }, 1000);
+        });
+      }
+    </script>
+  </body>
+</html>
