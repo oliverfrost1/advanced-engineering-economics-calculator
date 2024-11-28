@@ -2,6 +2,8 @@
 
 This tool is designed to simplify complex economic calculations by allowing you to evaluate multiple expressions simultaneously. Unlike standard calculators that limit you to single-factor computations, this advanced calculator lets you combine various financial factors in any way that suits you.
 
+Available at: [https://oliverfrost1.github.io/advanced-engineering-economics-calculator/](https://oliverfrost1.github.io/advanced-engineering-economics-calculator/)
+
 ## Features
 
 - **Multiple Expressions**: Compute complex equations involving multiple financial factors.
