@@ -8,8 +8,7 @@ Available at: [https://oliverfrost1.github.io/advanced-engineering-economics-cal
 
 - **Multiple Expressions**: Compute complex equations involving multiple financial factors.
 - **Flexible Input**: Combine financial factors in any configuration.
-- **User-Friendly Interface**: Intuitive design for easy navigation and input.
-- **Instant Results**: Get formatted and unformatted results instantly.
+- **Simple Interface**: Simple design for easy navigation and input.
 - **Copy Functionality**: Quickly copy results with or without the original equation.
 
 ### Calculator Interface
